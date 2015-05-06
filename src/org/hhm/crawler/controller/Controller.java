@@ -13,8 +13,8 @@ import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
-	private static int threadMax; // 最大线程数
-	private static int gatherMax;// 单位线程最大抓取数
+	private static int threadMax = 10; // 最大线程数
+	private static int gatherMax = 1;// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
 
@@ -26,6 +26,7 @@ public class Controller {
 		XmlBean xmlBean = new XmlBean();
 		List<Seeds> seedlist = xmlBean.get(new XMLElement("config/Seeds.xml")
 				.get());
+
 		Init init = new Init(seedlist);
 		init.action();
 
@@ -34,26 +35,39 @@ public class Controller {
 			@Override
 			public void run() {
 
-				if (threadPool.getActiveCount() < threadMax) {
-
-					List<Seeds> list = new ArrayList<Seeds>();
-					for (int i = 0; i < gatherMax; i++) {
-
-						list.add(crawldb.get());
-
+				while (true) {
+					int ActiveCount = threadPool.getActiveCount();
+					if (ActiveCount != 0) {
+						System.out.println("当前活跃线程为:" + ActiveCount);
 					}
 
-					Gather gather = new Gather(list);
+					if (ActiveCount < threadMax) {
 
-					threadPool.execute(gather);
+						List<Seeds> list = new ArrayList<Seeds>();
+						for (int i = 0; i < gatherMax; i++) {
+
+							list.add(crawldb.get());
+
+						}
+
+						Gather gather = new Gather(list);
+
+						threadPool.execute(gather);
+
+					} else {
+						// 如果线程池中的线程已满，则等待一段时间
+						try {
+							Thread.sleep(8000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 
 				}
-
 			}
 
 		});
 		t.start();
 
 	}
-
 }

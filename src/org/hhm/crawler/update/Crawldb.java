@@ -9,7 +9,7 @@ import org.hhm.crawler.pojo.seed.Seeds;
 public class Crawldb {
 	static BloomFilter bloomFilter = new BloomFilter();
 
-	private Set<Seeds> uList = new HashSet<Seeds>();
+	private static Set<Seeds> uList = new HashSet<Seeds>();
 	private static final Crawldb INSTANCE = new Crawldb();
 
 	public synchronized static final Crawldb getInstance() {
@@ -17,19 +17,22 @@ public class Crawldb {
 	}
 
 	public synchronized Seeds get() {
-		Iterator it = uList.iterator();
 
-		while (it.hasNext()) {
-			Seeds seeds = new Seeds();
-			seeds = (Seeds) it.next();
+		synchronized (this) {
 
-			it.remove();
-			return seeds;
+			Iterator it = uList.iterator();
 
+			while (it.hasNext()) {
+				Seeds seeds = new Seeds();
+				seeds = (Seeds) it.next();
+
+				it.remove();
+				return seeds;
+
+			}
+
+			return null;
 		}
-
-		return null;
-
 	}
 
 	public synchronized void set(Seeds seeds) {
@@ -42,6 +45,8 @@ public class Crawldb {
 			} else {
 				// 如果不存在，那就存入
 				uList.add(seeds);
+				System.out.println(uList.size());
+
 				bloomFilter.add(seeds.getMd5());
 
 			}
