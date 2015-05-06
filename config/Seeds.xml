@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Seeds>
+	<seed>
+		<field name="url">http://www.sina.com.cn/</field>
+		<field name="title" lablename="title" />
+		<field name="text" lablename="div" labelclass="swp-txt clearfix"
+			labelid="" />
+		<field name="depth">20</field>
+		<field name="filterSuffix">
+			gif,GIF,jpg,JPG,png,PNG,ico,ICO,css,sit,eps,wmf,zip,ppt,mpg,xls,gz,rpm,tgz,mov,MOV,exe,jpeg,JPEG,bmp,BMP,apk
+		</field>
+		<field name="directDomain">http://www.sina.com.cn/</field>
+	</seed>
+
+</Seeds>
