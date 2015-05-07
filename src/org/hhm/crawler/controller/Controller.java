@@ -13,8 +13,8 @@ import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
-	private static int threadMax = 10; // 最大线程数
-	private static int gatherMax = 1;// 单位线程最大抓取数
+	private static int threadMax = 1; // 最大线程数
+	private static int gatherMax = 100;// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
 
@@ -45,9 +45,14 @@ public class Controller {
 
 						List<Seeds> list = new ArrayList<Seeds>();
 						for (int i = 0; i < gatherMax; i++) {
+							Seeds seeds = crawldb.get();
 
-							list.add(crawldb.get());
+							if (seeds != null) {
 
+								System.out.println(seeds.toString());
+								list.add(seeds);
+
+							}
 						}
 
 						Gather gather = new Gather(list);

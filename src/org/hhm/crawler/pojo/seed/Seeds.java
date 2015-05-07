@@ -5,10 +5,24 @@ import org.hhm.crawler.util.md5.MD5;
 public class Seeds {
 
 	private String url;
+
+	@Override
+	public String toString() {
+		return "Seeds [url=" + url + ", title=" + title + ", text=" + text
+				+ ", time=" + time + ", author=" + author + ", md5=" + md5
+				+ ", depth=" + depth + ", filterSuffix=" + filterSuffix
+				+ ", directDomain=" + directDomain + "]";
+	}
+
 	private String title;
 	private String text;
 	private String time;
 	private String author;
+
+	private String md5;
+	private int depth;
+	private String filterSuffix;
+	private String directDomain;
 
 	@Override
 	public int hashCode() {
@@ -17,11 +31,6 @@ public class Seeds {
 		result = prime * result + ((md5 == null) ? 0 : md5.hashCode());
 		return result;
 	}
-
-	private String md5;
-	private int depth;
-	private String filterSuffix;
-	private String directDomain;
 
 	public String getUrl() {
 		return url;
@@ -87,14 +96,6 @@ public class Seeds {
 
 	public void setDirectDomain(String directDomain) {
 		this.directDomain = directDomain;
-	}
-
-	@Override
-	public String toString() {
-		return "Seeds [url=" + url + ", title=" + title + ", text=" + text
-				+ ", time=" + time + ", author=" + author + ", depth=" + depth
-				+ ", filterSuffix=" + filterSuffix + ", directDomain="
-				+ directDomain + "]";
 	}
 
 	public String getMd5() {

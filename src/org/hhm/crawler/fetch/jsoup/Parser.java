@@ -12,7 +12,7 @@ public class Parser {
 		String sourseCode = null;
 		Document doc_sourseCode = null;
 		try {
-			doc_sourseCode = Jsoup.connect(url).timeout(60000).get();
+			doc_sourseCode = Jsoup.connect(url).timeout(600).get();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

@@ -16,7 +16,13 @@ public class BloomFilter {
 	// 构建hash函数对象
 	private SimpleHash[] hashFuns = new SimpleHash[seeds.length];
 
-	public BloomFilter() {
+	private static final BloomFilter INSTANCE = new BloomFilter();
+
+	public synchronized static final BloomFilter getInstance() {
+		return BloomFilter.INSTANCE;
+	}
+
+	public void init() {
 		/**
 		 * 给出所有的hash值，共计seeds.length个hash值。共8位。
 		 * 通过调用SimpleHash.hash(),可以得到根据8种hash函数计算得出hash值。

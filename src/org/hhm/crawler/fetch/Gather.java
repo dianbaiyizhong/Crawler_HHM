@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 public class Gather implements Runnable {
 
 	static Parser parser = new Parser();
-	static Crawldb crawldb = new Crawldb();
+	static Crawldb crawldb = Crawldb.getInstance();
 	private List<Seeds> list;
 
 	public Gather(List<Seeds> list) {
@@ -28,6 +28,7 @@ public class Gather implements Runnable {
 
 				// 获取url
 				String url = list.get(i).getUrl();
+
 				// 根据url获取源代码
 				String sourseCode = parser.getSourseCode(url);
 				// 获取a标签
@@ -43,8 +44,8 @@ public class Gather implements Runnable {
 				// 把url存进crawldb
 
 				for (int j = 0; j < list_A.size(); j++) {
-					Seeds seeds = new Seeds();
-					seeds = list.get(i);
+					
+					Seeds seeds = list.get(i);
 					seeds.setUrl(list_A.get(j));
 					crawldb.set(seeds);
 				}
@@ -54,5 +55,4 @@ public class Gather implements Runnable {
 		}
 
 	}
-
 }
