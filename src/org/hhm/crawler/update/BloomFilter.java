@@ -8,13 +8,13 @@ public class BloomFilter {
 	/*
 	 * 不同哈希函数的种子，一般取质数 seeds数组共有8个值，则代表采用8种不同的哈希函数
 	 */
-	private int[] seeds = new int[] { 3, 5, 7, 11, 13, 31, 37, 61 };
+	private static int[] seeds = new int[] { 3, 5, 7, 11, 13, 31, 37, 61 };
 	/*
 	 * 初始化一个给定大小的位集 BitSet实际是由“二进制位”构成的一个Vector。 假如希望高效率地保存大量“开－关”信息，就应使用BitSet.
 	 */
-	private BitSet bitSets = new BitSet(DEFAULT_SIZE);
+	private static BitSet bitSets = new BitSet(DEFAULT_SIZE);
 	// 构建hash函数对象
-	private SimpleHash[] hashFuns = new SimpleHash[seeds.length];
+	private static SimpleHash[] hashFuns = new SimpleHash[seeds.length];
 
 	private static final BloomFilter INSTANCE = new BloomFilter();
 
@@ -31,6 +31,10 @@ public class BloomFilter {
 		for (int i = 0; i < seeds.length; i++) {
 			hashFuns[i] = new SimpleHash(DEFAULT_SIZE, seeds[i]);
 		}
+	}
+
+	public int getSize() {
+		return bitSets.size();
 	}
 
 	/**
@@ -68,6 +72,10 @@ public class BloomFilter {
 		}
 
 		return true;
+	}
+
+	public void clear() {
+		bitSets.clear();
 	}
 
 	public static class SimpleHash {

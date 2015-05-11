@@ -3,8 +3,9 @@ package org.hhm.crawler.fetch;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hhm.crawler.analyzer.Analyzer;
 import org.hhm.crawler.fetch.jsoup.Parser;
-import org.hhm.crawler.pojo.seed.Seeds;
+import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.Crawldb;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +14,7 @@ import org.jsoup.select.Elements;
 public class Gather implements Runnable {
 
 	static Parser parser = new Parser();
-	static Crawldb crawldb = Crawldb.getInstance();
+	Crawldb crawldb = Crawldb.getInstance();
 	private List<Seeds> list;
 
 	public Gather(List<Seeds> list) {
@@ -27,32 +28,67 @@ public class Gather implements Runnable {
 			for (int i = 0; i < list.size(); i++) {
 
 				// 获取url
-				String url = list.get(i).getUrl();
+				Seeds seeds_plan = list.get(i);
+
+				String url = seeds_plan.getUrl();
 
 				// 根据url获取源代码
 				String sourseCode = parser.getSourseCode(url);
-				// 获取a标签
-				Document doc = Jsoup.parse(sourseCode);
-				Elements el_lable_A = doc.select("a");
-
-				List<String> list_A = new ArrayList<String>();
-				for (int k = 0; k < el_lable_A.size(); k++) {
-
-					list_A.add(el_lable_A.get(k).attr("href"));
-
+				if (sourseCode == null) {
+					continue;
 				}
-				// 把url存进crawldb
 
-				for (int j = 0; j < list_A.size(); j++) {
-					
-					Seeds seeds = list.get(i);
-					seeds.setUrl(list_A.get(j));
-					crawldb.set(seeds);
+				// 判断是否已经达到指定深度
+				if (seeds_plan.getNow_depth() <= seeds_plan.getPoint_depth()) {
+					getNewUrl(sourseCode, seeds_plan);
+
+					// 在这里开始解析
+					Analyzer analyzer = new Analyzer(seeds_plan, sourseCode);
+					analyzer.start();
+
+				} else {
+					continue;
 				}
 
 			}
 
 		}
 
+	}
+
+	/**
+	 * 获取新链接
+	 * 
+	 * @param sourseCode
+	 * @param seeds_plan
+	 */
+	private void getNewUrl(String sourseCode, Seeds seeds_plan) {
+		// 获取a标签
+		Document doc = Jsoup.parse(sourseCode);
+		Elements el_lable_A = doc.select("a");
+
+		List<String> list_A = new ArrayList<String>();
+		for (int k = 0; k < el_lable_A.size(); k++) {
+
+			list_A.add(el_lable_A.get(k).attr("href"));
+
+		}
+		// 把url存进crawldb
+		for (int j = 0; j < list_A.size(); j++) {
+
+			// 先判断是否为符合规则的url,返回null，则不符合
+			String new_url = crawldb.filter(seeds_plan, list_A.get(j));
+			if (new_url != null) {
+				Seeds seeds = new Seeds();
+
+				seeds = (Seeds) seeds_plan.clone();
+
+				seeds.setUrl(new_url);
+				seeds.setNow_depth(seeds_plan.getNow_depth());
+
+				crawldb.set(seeds);
+			}
+
+		}
 	}
 }

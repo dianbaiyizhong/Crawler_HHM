@@ -2,7 +2,7 @@ package org.hhm.crawler.init;
 
 import java.util.List;
 
-import org.hhm.crawler.pojo.seed.Seeds;
+import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.BloomFilter;
 import org.hhm.crawler.update.Crawldb;
 
@@ -22,6 +22,9 @@ public class Init {
 		bloomFilter.init();
 		// 存入待抓队列
 		for (int i = 0; i < seedlist.size(); i++) {
+			// 设置初始深度为0
+			seedlist.get(i).setNow_depth(0);
+
 			crawldb.set(seedlist.get(i));
 
 		}

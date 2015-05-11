@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.logging.Logger;
 
 import org.hhm.crawler.fetch.Gather;
 import org.hhm.crawler.init.Init;
-import org.hhm.crawler.pojo.seed.Seeds;
+import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.Crawldb;
 import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
 	private static int threadMax = 1; // 最大线程数
-	private static int gatherMax = 100;// 单位线程最大抓取数
+	private static int gatherMax = 1;// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
-
-	static Crawldb crawldb = Crawldb.getInstance();
+	static Logger log = Logger.getLogger("");
 
 	public void Start() {
 
@@ -27,8 +27,10 @@ public class Controller {
 		List<Seeds> seedlist = xmlBean.get(new XMLElement("config/Seeds.xml")
 				.get());
 
+		System.out.println(seedlist);
 		Init init = new Init(seedlist);
 		init.action();
+		final Crawldb crawldb = Crawldb.getInstance();
 
 		Thread t = new Thread(new Runnable() {
 
@@ -38,7 +40,7 @@ public class Controller {
 				while (true) {
 					int ActiveCount = threadPool.getActiveCount();
 					if (ActiveCount != 0) {
-						System.out.println("当前活跃线程为:" + ActiveCount);
+						log.info("当前活跃线程为:" + ActiveCount);
 					}
 
 					if (ActiveCount < threadMax) {
@@ -48,8 +50,6 @@ public class Controller {
 							Seeds seeds = crawldb.get();
 
 							if (seeds != null) {
-
-								System.out.println(seeds.toString());
 								list.add(seeds);
 
 							}
