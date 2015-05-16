@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.hhm.crawler.pojo.Seeds;
 
 public class Crawldb {
@@ -14,7 +14,7 @@ public class Crawldb {
 
 	private static Set<Seeds> uList = new HashSet<Seeds>();
 	private static final Crawldb INSTANCE = new Crawldb();
-	static Logger log = Logger.getLogger("");
+	private static Logger logger = Logger.getLogger(Crawldb.class);
 
 	public synchronized static final Crawldb getInstance() {
 		return Crawldb.INSTANCE;
@@ -51,9 +51,11 @@ public class Crawldb {
 
 					uList.add(seeds);
 
-					log.info("新增url为:" + seeds.getUrl());
-					log.info("待抓队列中现有数据:" + uList.size());
+					logger.info("新增url为:" + seeds.getUrl());
+					logger.info("待抓队列中现有数据:" + uList.size());
 					bloomFilter.add(seeds.getMd5());
+
+					// logger.info("已抓队列大小:"+bloomFilter.getSize());
 
 				}
 
@@ -113,7 +115,7 @@ public class Crawldb {
 			}
 		} catch (Exception e) {
 
-			log.warning("id为【 " + id + "】的任务未设置【" + "url过滤后缀" + "】");
+			logger.warn("id为【 " + id + "】的任务未设置【" + "url过滤后缀" + "】");
 
 		}
 		return list;

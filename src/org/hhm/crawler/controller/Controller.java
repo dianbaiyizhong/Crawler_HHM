@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.hhm.crawler.fetch.Gather;
 import org.hhm.crawler.init.Init;
 import org.hhm.crawler.pojo.Seeds;
@@ -14,11 +14,11 @@ import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
-	private static int threadMax = 100; // 最大线程数
+	private static int threadMax = 1; // 最大线程数
 	private static int gatherMax = 20;// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
-	static Logger log = Logger.getLogger("");
+	private static Logger logger = Logger.getLogger(Controller.class);
 
 	public void Start() {
 
@@ -27,7 +27,6 @@ public class Controller {
 		List<Seeds> seedlist = xmlBean.get(new XMLElement("config/Seeds.xml")
 				.get());
 
-		System.out.println(seedlist);
 		Init init = new Init(seedlist);
 		init.action();
 		final Crawldb crawldb = Crawldb.getInstance();
@@ -40,7 +39,7 @@ public class Controller {
 				while (true) {
 					int ActiveCount = threadPool.getActiveCount();
 					if (ActiveCount != 0) {
-						log.info("当前活跃线程为:" + ActiveCount);
+						logger.info("当前活跃线程为:" + ActiveCount);
 					}
 
 					if (ActiveCount < threadMax) {

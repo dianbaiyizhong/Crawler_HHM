@@ -77,8 +77,10 @@ public class Gather implements Runnable {
 		for (int j = 0; j < list_A.size(); j++) {
 
 			// 先判断是否为符合规则的url,返回null，则不符合
-			String new_url = crawldb.filter(seeds_plan, list_A.get(j));
+			String new_url = crawldb.filter(seeds_plan, list_A.get(j).trim());
+
 			if (new_url != null) {
+
 				Seeds seeds = new Seeds();
 
 				seeds = (Seeds) seeds_plan.clone();

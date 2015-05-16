@@ -34,7 +34,7 @@ public class BloomFilter {
 	}
 
 	public int getSize() {
-		return bitSets.size();
+		return bitSets.cardinality();
 	}
 
 	/**
