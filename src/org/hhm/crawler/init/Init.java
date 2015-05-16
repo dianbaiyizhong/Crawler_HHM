@@ -5,6 +5,8 @@ import java.util.List;
 import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.BloomFilter;
 import org.hhm.crawler.update.Crawldb;
+import org.hhm.crawler.util.xml.XMLElement;
+import org.hhm.crawler.util.xml.XmlBean;
 
 public class Init {
 
@@ -20,6 +22,9 @@ public class Init {
 	public void action() {
 		// 初始化布隆过滤器
 		bloomFilter.init();
+		XmlBean xmlBean = new XmlBean();
+		xmlBean.getConfig(new XMLElement("config/Config.xml").get());
+		xmlBean.getDBConfig(new XMLElement("config/DBConfig.xml").get());
 		// 存入待抓队列
 		for (int i = 0; i < seedlist.size(); i++) {
 			// 设置初始深度为0

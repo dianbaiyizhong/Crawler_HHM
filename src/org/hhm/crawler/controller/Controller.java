@@ -8,14 +8,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.apache.log4j.Logger;
 import org.hhm.crawler.fetch.Gather;
 import org.hhm.crawler.init.Init;
+import org.hhm.crawler.pojo.Config;
 import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.Crawldb;
 import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
-	private static int threadMax = 1; // 最大线程数
-	private static int gatherMax = 20;// 单位线程最大抓取数
+
+	private static int threadMax = Config.getThreads(); // 最大线程数
+	private static int gatherMax = Config.getThreadGatherMax();// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
 	private static Logger logger = Logger.getLogger(Controller.class);
@@ -24,8 +26,10 @@ public class Controller {
 
 		// 获取种子列表
 		XmlBean xmlBean = new XmlBean();
-		List<Seeds> seedlist = xmlBean.get(new XMLElement("config/Seeds.xml")
-				.get());
+		List<Seeds> seedlist = xmlBean.getSeeds(new XMLElement(
+				"config/Seeds.xml").get());
+
+	
 
 		Init init = new Init(seedlist);
 		init.action();

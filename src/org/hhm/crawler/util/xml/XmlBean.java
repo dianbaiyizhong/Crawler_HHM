@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Element;
+import org.hhm.crawler.pojo.Config;
+import org.hhm.crawler.pojo.DBConfig;
 import org.hhm.crawler.pojo.Seeds;
 
 public class XmlBean {
 
-	public List<Seeds> get(Element root) {
+	public List<Seeds> getSeeds(Element root) {
 		List<Seeds> list = new ArrayList<Seeds>();
 
 		for (Iterator it = root.elementIterator(); it.hasNext();) {
@@ -48,4 +50,27 @@ public class XmlBean {
 		return list;
 
 	}
+
+	public Config getConfig(Element root) {
+		Config config = new Config();
+		config.setThreads(Integer.parseInt(root.elementText("threads")));
+		config.setIsApplyTemplate(Integer.parseInt(root
+				.elementText("isApplyTemplate")));
+		config.setIsLucene(Integer.parseInt(root.elementText("isLucene")));
+		config.setMonitorTime(Integer.parseInt(root.elementText("monitorTime")));
+		config.setTaskID(Integer.parseInt(root.elementText("taskID")));
+		config.setThreadGatherMax(Integer.parseInt(root
+				.elementText("threadGatherMax")));
+		return config;
+	}
+
+	public DBConfig getDBConfig(Element root) {
+		DBConfig dBConfig = new DBConfig();
+		dBConfig.setDataBaseName(root.elementText("DataBaseName"));
+		dBConfig.setiP(root.elementText("ServerIP"));
+		dBConfig.setUserName(root.elementText("ServerUserName"));
+		dBConfig.setPassword(root.elementText("ServerPassword"));
+		return dBConfig;
+	}
+
 }
