@@ -14,8 +14,8 @@ import org.hhm.crawler.util.xml.XMLElement;
 import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
-	private static int threadMax = 1; // 最大线程数
-	private static int gatherMax = 1;// 单位线程最大抓取数
+	private static int threadMax = 100; // 最大线程数
+	private static int gatherMax = 20;// 单位线程最大抓取数
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
 	static Logger log = Logger.getLogger("");
