@@ -53,6 +53,7 @@ public class XmlBean {
 
 	public Config getConfig(Element root) {
 		Config config = new Config();
+		
 		config.setThreads(Integer.parseInt(root.elementText("threads")));
 		config.setIsApplyTemplate(Integer.parseInt(root
 				.elementText("isApplyTemplate")));

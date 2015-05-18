@@ -12,7 +12,7 @@ import org.hhm.crawler.pojo.Seeds;
 public class Crawldb {
 	static BloomFilter bloomFilter = BloomFilter.getInstance();
 
-	private static Set<Seeds> uList = new HashSet<Seeds>();
+	private Set<Seeds> uList = new HashSet<Seeds>();
 	private static final Crawldb INSTANCE = new Crawldb();
 	private static Logger logger = Logger.getLogger(Crawldb.class);
 
@@ -21,19 +21,26 @@ public class Crawldb {
 	}
 
 	public synchronized Seeds get() {
-		Iterator<Seeds> it = uList.iterator();
+		Iterator it = uList.iterator();
+		Seeds seeds = null;
 
-		synchronized (this) {
-			while (it.hasNext()) {
-				Seeds seeds = new Seeds();
-				seeds = it.next();
+		if (it.hasNext()) {
 
-				it.remove();
-				return seeds;
-			}
+			seeds = (Seeds) it.next();
 
-			return null;
+			it.remove();
+
+			return seeds;
+
 		}
+
+		return null;
+
+	}
+
+	public int getSize() {
+
+		return uList.size();
 
 	}
 
@@ -51,8 +58,6 @@ public class Crawldb {
 
 					uList.add(seeds);
 
-					logger.info("新增url为:" + seeds.getUrl());
-					logger.info("待抓队列中现有数据:" + uList.size());
 					bloomFilter.add(seeds.getMd5());
 
 					// logger.info("已抓队列大小:"+bloomFilter.getSize());

@@ -11,8 +11,8 @@
 	<!-- 是否应用模板 -->
 	<isApplyTemplate>0</isApplyTemplate>
 	<!-- 线程数 -->
-	<threads>50</threads>
+	<threads>20</threads>
 	<!-- 单位采集线程数 -->
-	<threadGatherMax>20</threadGatherMax>
+	<threadGatherMax>50</threadGatherMax>
 
 </Configs>

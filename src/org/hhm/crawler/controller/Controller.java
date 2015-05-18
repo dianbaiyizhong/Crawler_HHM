@@ -16,23 +16,17 @@ import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
 
-	private static int threadMax = Config.getThreads(); // 最大线程数
-	private static int gatherMax = Config.getThreadGatherMax();// 单位线程最大抓取数
+	static Config config = new Config();
+
+	private static int threadMax = config.getThreads(); // 最大线程数
+	private static int gatherMax = config.getThreadGatherMax();// 单位线程最大抓取数
+
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
 	private static Logger logger = Logger.getLogger(Controller.class);
 
 	public void Start() {
 
-		// 获取种子列表
-		XmlBean xmlBean = new XmlBean();
-		List<Seeds> seedlist = xmlBean.getSeeds(new XMLElement(
-				"config/Seeds.xml").get());
-
-	
-
-		Init init = new Init(seedlist);
-		init.action();
 		final Crawldb crawldb = Crawldb.getInstance();
 
 		Thread t = new Thread(new Runnable() {
@@ -43,7 +37,7 @@ public class Controller {
 				while (true) {
 					int ActiveCount = threadPool.getActiveCount();
 					if (ActiveCount != 0) {
-						logger.info("当前活跃线程为:" + ActiveCount);
+						// logger.info("当前活跃线程为:" + ActiveCount);
 					}
 
 					if (ActiveCount < threadMax) {
@@ -51,15 +45,14 @@ public class Controller {
 						List<Seeds> list = new ArrayList<Seeds>();
 						for (int i = 0; i < gatherMax; i++) {
 							Seeds seeds = crawldb.get();
-
 							if (seeds != null) {
 								list.add(seeds);
 
 							}
+
 						}
-
+						logger.info("待抓队列中现有数据:" + crawldb.getSize());
 						Gather gather = new Gather(list);
-
 						threadPool.execute(gather);
 
 					} else {

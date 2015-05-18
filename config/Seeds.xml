@@ -9,7 +9,7 @@
 		<field name="filterSuffix">
 			javascript:;,gif,GIF,jpg,JPG,png,PNG,ico,ICO,css,sit,eps,wmf,zip,ppt,mpg,xls,gz,rpm,tgz,mov,MOV,exe,jpeg,JPEG,bmp,BMP,apk
 		</field>
-		<field name="directDomain">http://bbs.tianya.cn/</field>
+		<field name="directDomain">http://bbs.tianya.cn</field>
 	</seed>
 
 </Seeds>

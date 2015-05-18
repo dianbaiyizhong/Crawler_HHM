@@ -3,6 +3,7 @@ package org.hhm.crawler.fetch;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hhm.crawler.analyzer.Analyzer;
 import org.hhm.crawler.fetch.jsoup.Parser;
 import org.hhm.crawler.pojo.Seeds;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 public class Gather implements Runnable {
+	private static Logger logger = Logger.getLogger(Gather.class);
 
 	static Parser parser = new Parser();
 	Crawldb crawldb = Crawldb.getInstance();
@@ -40,6 +42,7 @@ public class Gather implements Runnable {
 
 				// 判断是否已经达到指定深度
 				if (seeds_plan.getNow_depth() <= seeds_plan.getPoint_depth()) {
+
 					getNewUrl(sourseCode, seeds_plan);
 
 					// 在这里开始解析
