@@ -2,6 +2,7 @@ package org.hhm.crawler.init;
 
 import java.util.List;
 
+import org.hhm.crawler.init.impl.InitImpl;
 import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.update.BloomFilter;
 import org.hhm.crawler.update.Crawldb;
@@ -15,21 +16,22 @@ public class Init {
 	static BloomFilter bloomFilter = BloomFilter.getInstance();
 
 	public void action() {
-		XmlBean xmlBean = new XmlBean();
 
+		// 加载数据库信息
+		XmlBean xmlBean = new XmlBean();
+		xmlBean.getDBConfig(new XMLElement("Config/DBConfig.xml").get());
+
+		InitImpl initImpl = new InitImpl();
+		// 获取任务列表
+		initImpl.getTaskInfo(1);
 		// 获取种子列表
-		List<Seeds> seedlist = xmlBean.getSeeds(new XMLElement(
-				"config/Seeds.xml").get());
+		List<Seeds> seedlist = initImpl.getGatherwebsite(1);
+
 		// 初始化布隆过滤器
 		bloomFilter.init();
 
-		xmlBean.getConfig(new XMLElement("config/Config.xml").get());
-		xmlBean.getDBConfig(new XMLElement("config/DBConfig.xml").get());
-
 		// 存入待抓队列
 		for (int i = 0; i < seedlist.size(); i++) {
-			// 设置初始深度为0
-			seedlist.get(i).setNow_depth(0);
 
 			crawldb.set(seedlist.get(i));
 

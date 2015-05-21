@@ -7,23 +7,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import org.apache.log4j.Logger;
 import org.hhm.crawler.fetch.Gather;
-import org.hhm.crawler.init.Init;
-import org.hhm.crawler.pojo.Config;
 import org.hhm.crawler.pojo.Seeds;
+import org.hhm.crawler.pojo.db.Taskinfo;
 import org.hhm.crawler.update.Crawldb;
-import org.hhm.crawler.util.xml.XMLElement;
-import org.hhm.crawler.util.xml.XmlBean;
 
 public class Controller {
 
-	static Config config = new Config();
+	private static int threadMax = Taskinfo.getGatherThread();// 最大线程数
 
-	private static int threadMax = config.getThreads(); // 最大线程数
-	private static int gatherMax = config.getThreadGatherMax();// 单位线程最大抓取数
+	private static int gatherMax = 200;// 单位线程最大抓取数
 
 	private ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors
 			.newFixedThreadPool(threadMax);
-	private static Logger logger = Logger.getLogger(Controller.class);
 
 	public void Start() {
 
@@ -51,7 +46,7 @@ public class Controller {
 							}
 
 						}
-						logger.info("待抓队列中现有数据:" + crawldb.getSize());
+						// logger.info("待抓队列中现有数据:" + crawldb.getSize());
 						Gather gather = new Gather(list);
 						threadPool.execute(gather);
 

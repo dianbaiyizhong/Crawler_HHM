@@ -12,6 +12,7 @@ public class Parser {
 	private static Logger logger = Logger.getLogger(Analyzer.class);
 
 	public String getSourseCode(String url) {
+
 		String sourseCode = null;
 		Document doc_sourseCode = null;
 		try {

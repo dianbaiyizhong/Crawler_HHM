@@ -1,7 +1,7 @@
 package org.hhm.crawler.pojo;
 
-import org.dom4j.Element;
 import org.hhm.crawler.util.md5.MD5;
+import org.jsoup.select.Elements;
 
 public class Seeds implements Cloneable {
 
@@ -22,45 +22,44 @@ public class Seeds implements Cloneable {
 	private int point_depth;
 	private String filterSuffix;
 	private String directDomain;
-
 	private String md5;
 
-	public Element getTitle() {
+	public Elements getTitle() {
 		return title;
 	}
 
-	public void setTitle(Element title) {
+	public void setTitle(Elements title) {
 		this.title = title;
 	}
 
-	public Element getText() {
+	public Elements getText() {
 		return text;
 	}
 
-	public void setText(Element text) {
+	public void setText(Elements text) {
 		this.text = text;
 	}
 
-	public Element getTime() {
+	public Elements getTime() {
 		return time;
 	}
 
-	public void setTime(Element time) {
+	public void setTime(Elements time) {
 		this.time = time;
 	}
 
-	public Element getAuthor() {
+	public Elements getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Element author) {
+	public void setAuthor(Elements author) {
 		this.author = author;
 	}
 
-	private Element title;
-	private Element text;
-	private Element time;
-	private Element author;
+	private Elements title;
+	private Elements text;
+	private Elements time;
+	private Elements author;
 
 	public int getNow_depth() {
 		return now_depth;

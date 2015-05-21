@@ -15,10 +15,10 @@ public class DBConnByMySql {
 		try {
 			Class.forName(dbdriver);
 
-			String url = "jdbc:mysql://" + DBConfig.getiP() + "/"
-					+ DBConfig.getDataBaseName()
+			String url = "jdbc:mysql://" + DBConfig.getiP() + ":"
+					+ DBConfig.getPort() + "/" + DBConfig.getName()
 					+ "?useUnicode=true&characterEncoding=UTF-8";
-			ret = DriverManager.getConnection(url, DBConfig.getUserName(),
+			ret = DriverManager.getConnection(url, DBConfig.getUsername(),
 					DBConfig.getPassword());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
