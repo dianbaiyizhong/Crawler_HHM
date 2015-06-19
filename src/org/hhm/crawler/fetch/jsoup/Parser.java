@@ -17,7 +17,7 @@ public class Parser {
 		Document doc_sourseCode = null;
 		try {
 
-			doc_sourseCode = Jsoup.connect(url).timeout(6000).get();
+			doc_sourseCode = Jsoup.connect(url).timeout(60000).get();
 		} catch (IOException e) {
 
 			logger.error(e.getMessage());

@@ -108,7 +108,7 @@ public class Analyzer {
 		}
 		logger.info(content);
 
-		dataImpl.saveData(content);
+	//	dataImpl.saveData(content);
 
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.log4j.Logger;
 import org.hhm.crawler.fetch.Gather;
 import org.hhm.crawler.pojo.Seeds;
 import org.hhm.crawler.pojo.db.Taskinfo;
